@@ -37,22 +37,22 @@ static dispatch_queue_t json_request_operation_processing_queue() {
 @implementation AFJSONRequestOperation
 
 + (id)operationWithRequest:(NSURLRequest *)urlRequest                
-                   success:(void (^)(id JSON))success
+                   success:(void (^)(id JSON, NSHTTPURLResponse *response))success
 {
     return [self operationWithRequest:urlRequest success:success failure:nil];
 }
 
 + (id)operationWithRequest:(NSURLRequest *)urlRequest 
-                   success:(void (^)(id JSON))success
-                   failure:(void (^)(NSError *error))failure
+                   success:(void (^)(id JSON, NSHTTPURLResponse *response))success
+                   failure:(void (^)(NSHTTPURLResponse *response, NSError *error))failure
 {    
     return [self operationWithRequest:urlRequest acceptableStatusCodes:[self defaultAcceptableStatusCodes] acceptableContentTypes:[self defaultAcceptableContentTypes] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         if (success) {
-            success(JSON);
+            success(JSON, response);
         }
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         if (failure) {
-            failure(error);
+            failure(response, error);
         }
     }];
 }

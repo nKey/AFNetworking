@@ -26,6 +26,9 @@
 #import "NSMutableURLRequest+AFNetworking.h"
 #import "NSString+AFNetworking.h"
 
+typedef void (^SuccessBlock)(id data, NSHTTPURLResponse *response);
+typedef void (^FailureBlock)(NSHTTPURLResponse *response, NSError *error);
+
 @protocol AFRestClient <NSObject>
 + (NSURL *)baseURL;
 @end
@@ -45,8 +48,8 @@
                                       path:(NSString *)path parameters:(NSDictionary *)parameters;
 
 - (void)enqueueHTTPOperationWithRequest:(NSURLRequest *)request 
-                                success:(void (^)(id response))success 
-                                failure:(void (^)(NSError *error))failure;
+                                success:(SuccessBlock)success 
+                                failure:(FailureBlock)failure;
 
 - (void)cancelHTTPOperationsWithRequest:(NSURLRequest *)request;
 
@@ -54,37 +57,37 @@
 
 - (void)getPath:(NSString *)path 
      parameters:(NSDictionary *)parameters 
-        success:(void (^)(id response))success;
+        success:(SuccessBlock)success;
 
 - (void)getPath:(NSString *)path 
      parameters:(NSDictionary *)parameters 
-        success:(void (^)(id response))success 
-        failure:(void (^)(NSError *error))failure;
+        success:(SuccessBlock)success 
+        failure:(FailureBlock)failure;
 
 - (void)postPath:(NSString *)path 
       parameters:(NSDictionary *)parameters 
-         success:(void (^)(id response))success;
+         success:(SuccessBlock)success;
 
 - (void)postPath:(NSString *)path 
       parameters:(NSDictionary *)parameters 
-         success:(void (^)(id response))success 
-         failure:(void (^)(NSError *error))failure;
+         success:(SuccessBlock)success 
+         failure:(FailureBlock)failure;
 
 - (void)putPath:(NSString *)path 
      parameters:(NSDictionary *)parameters 
-        success:(void (^)(id response))success;
+        success:(SuccessBlock)success;
 
 - (void)putPath:(NSString *)path 
      parameters:(NSDictionary *)parameters 
-        success:(void (^)(id response))success 
-        failure:(void (^)(NSError *error))failure;
+        success:(SuccessBlock)success 
+        failure:(FailureBlock)failure;
 
 - (void)deletePath:(NSString *)path 
         parameters:(NSDictionary *)parameters 
-           success:(void (^)(id response))success;
+           success:(SuccessBlock)success;
 
 - (void)deletePath:(NSString *)path 
         parameters:(NSDictionary *)parameters 
-           success:(void (^)(id response))success 
-           failure:(void (^)(NSError *error))failure;
+           success:(SuccessBlock)success 
+           failure:(FailureBlock)failure;
 @end
